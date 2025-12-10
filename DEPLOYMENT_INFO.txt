@@ -18,6 +18,5 @@ Notes:
 docker build --platform linux/amd64 -t stock-report:latest .
 docker run \
   --env-file [.env file name ] \
-  -v $HOME/.pgpass:/root/.pgpass:ro \
   -p 8501:8501 stock-report:latest
 ```
