@@ -6,8 +6,8 @@ This project demonstrates that an agentic AI architecture can turn a natural-lan
 
 ## Deployment Information
 
--   **Project Slug:** `tbd`
--   **Deployment URL:** `tbd`
+-   **Project Slug:** `stock-report`
+-   **Deployment URL:** `https://[cloudfront-domain]/stock-report`
 -   **Main File:** `app.py`
 
 ## Environment Variables Required
@@ -23,4 +23,31 @@ pip install -r requirements.txt
 
 # Run app
 streamlit run app.py
+```
+
+## WRDS Credentials
+Create a '.pgpass' file:
+```
+touch ~/.pgpass
+chmod 600 ~/.pgpass
+```
+make sure that when you do:
+
+```
+cat ~/.pgpass
+```
+
+you see:
+```
+wrds-pgdata.wharton.upenn.edu:9737:wrds:username:password
+wrds-pgdata.wharton.upenn.edu:9737:wrds:password:
+```
+
+## Docker Build
+```
+docker build --platform linux/amd64 -t stock-report:latest .
+docker run \
+  --env-file [.env file name ] \
+  -v $HOME/.pgpass:/root/.pgpass:ro \
+  -p 8501:8501 stock-report:latest
 ```
