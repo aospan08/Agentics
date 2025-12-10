@@ -2,7 +2,7 @@
 
 ## Description
 
-This project focuses on automating that workflow by generating anomaly-centered stock health reports. Given a natural-language query (e.g., “Explain recent abnormal moves in Microsoft (MSFT), focusing on board changes, analyst upgrades/downgrades, and Fed shocks”), the system identifies periods of unusual price behavior relative to a benchmark (sector), retrieves relevant board events, analyst rating changes, macro factors, and news, and synthesizes them into one coherent narrative.
+This project demonstrates that an agentic AI architecture can turn a natural-language prompt into an anomaly-centered stock health report. Given a natural-language query (e.g., “Explain recent abnormal moves in Microsoft (MSFT), focusing on board changes, analyst upgrades/downgrades, and Fed shocks”), the system identifies periods of unusual price behavior relative to a benchmark (sector), retrieves relevant board events, analyst rating changes, macro factors, and news, and synthesizes them into one coherent narrative.
 
 ## Deployment Information
 
