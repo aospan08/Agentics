@@ -6,29 +6,12 @@ Main File: app.py
 Environment Variables Needed:
 - GOOGLE_API_KEY: [Yes]
 - WRDS_USERNAME: [Yes]
+- WRDS_PASSWORD: [Yes]
 
 Verified Working Locally: [Yes]
 Verified Working in Docker: [Yes]
 
 Notes:
-
-## WRDS Credentials
-Create a '.pgpass' file:
-```
-touch ~/.pgpass
-chmod 600 ~/.pgpass
-```
-make sure that when you run:
-
-```
-cat ~/.pgpass
-```
-
-you see:
-```
-wrds-pgdata.wharton.upenn.edu:9737:wrds:username:password
-wrds-pgdata.wharton.upenn.edu:9737:wrds:password:
-```
 
 ## Docker Build
 ```
