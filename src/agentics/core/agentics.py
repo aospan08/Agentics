@@ -773,8 +773,8 @@ class AG(BaseModel, Generic[T]):
         # Perform Transduction
         transducer_class = (
             PydanticTransducerCrewAI
-            if type(self.llm) == LLM
-            else PydanticTransducerVLLM
+            # if type(self.llm) == LLM
+            # else PydanticTransducerVLLM
         )
         try:
             transduced_type = (
@@ -799,6 +799,7 @@ class AG(BaseModel, Generic[T]):
                 transient_pbar=self.transient_pbar,
             )
         except Exception as e:
+            logger.error(f"Transduction error: {e}")
             transduced_results = self.states
 
         n_errors = 0

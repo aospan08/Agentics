@@ -1,0 +1,9 @@
+agentics-py
+ddgs
+pandas
+pydantic
+python-dotenv
+streamlit
+wrds
+google-genai
+litellm
