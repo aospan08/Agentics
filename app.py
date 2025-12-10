@@ -25,6 +25,7 @@ from ddgs import DDGS
 BASE = Path(__file__).resolve().parent
 # print(BASE)
 DEFAULT_WRDS_USERNAME = os.getenv("WRDS_USERNAME", "")
+DEFAULT_WRDS_PASSWORD = os.getenv("WRDS_PASSWORD", "")
 DEFAULT_FOCUS_TOP_K = int(os.getenv("FOCUS_TOP_K", "10"))
 ENABLE_NEWS_ENV = os.getenv("ENABLE_NEWS", "true").lower() == "true"
 
@@ -185,9 +186,11 @@ async def parse_indicator_request(user_request: str) -> IndicatorRequest:
     return parsed[0]
 
 
-def connect_wrds(username: str) -> wrds.Connection:
+def connect_wrds(username: str, password: Optional[str] = None) -> wrds.Connection:
     if not username:
         raise ValueError("Please provide a WRDS username (set WRDS_USERNAME in your .env).")
+    if password:
+        return wrds.Connection(wrds_username=username, wrds_password=password)
     return wrds.Connection(wrds_username=username)
 
 
@@ -558,6 +561,7 @@ def render_stock_health(health):
 async def run_pipeline(
     user_request: str,
     wrds_username: str,
+    wrds_password: Optional[str],
     timeframe_days: int,
     focus_top_k: int,
     enable_news: bool,
@@ -589,7 +593,7 @@ async def run_pipeline(
     window_end = datetime.today()
     window_start = window_end - timedelta(days=indicator_spec.timeframe_days or 180)
 
-    db = connect_wrds(wrds_username)
+    db = connect_wrds(wrds_username, wrds_password)
     try:
         wrds_df, board_df, ibes_df = fetch_wrds_window(
             ticker=indicator_spec.ticker,
@@ -720,10 +724,11 @@ def main():
             index=0,
             format_func=lambda val: "Auto-detect from request" if val == "" else val,
         )
-        col1, col2 = st.columns(2)
+        col1, col2, col_timeframe = st.columns(3)
         wrds_username = col1.text_input("WRDS username", value=DEFAULT_WRDS_USERNAME)
+        wrds_password = col2.text_input("WRDS password", type="password", value=DEFAULT_WRDS_PASSWORD)
         # timeframe_days = int(col2.number_input("Timeframe (days)", min_value=30, max_value=365, value=90, step=5))
-        timeframe_input = col2.text_input(
+        timeframe_input = col_timeframe.text_input(
             "Timeframe (days, optional)",
             value="",
             placeholder="Auto-detect from request (default 180 if missing)",
@@ -762,6 +767,7 @@ def main():
                 run_pipeline(
                     user_request=user_request,
                     wrds_username=wrds_username,
+                    wrds_password=wrds_password,
                     timeframe_days=timeframe_days,
                     focus_top_k=focus_top_k,
                     enable_news=enable_news,
